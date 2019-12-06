@@ -7,7 +7,7 @@
 \DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{5}  % for normal
 
 % Custom colors
-\usepackage{color}
+\usepackage{xcolor}
 \definecolor{deepblue}{rgb}{0,0,0.5}
 \definecolor{deepred}{rgb}{0.6,0,0}
 \definecolor{deepgreen}{rgb}{0,0.5,0}
@@ -20,12 +20,12 @@ language=Python,
 basicstyle=\ttm,
 otherkeywords={self},             % Add keywords here
 keywordstyle=\ttb\color{deepblue},
-emph={MyClass,__init__},          % Custom highlighting
+emph={SinKew,__init__},          % Custom highlighting
 emphstyle=\ttb\color{deepred},    % Custom highlighting style
 stringstyle=\color{deepgreen},
 frame=tb,                         % Any extra options here
-numbers=left,
-stepnumber=1,
+numbers=right,
+stepnumber=5,
 showstringspaces=false            % 
 }}
 
@@ -34,7 +34,7 @@ showstringspaces=false            %
 \lstinputlisting[#1]{#2}}}
 
 % ------- set darkmode -----------
-\usepackage{xcolor}
+%\usepackage{xcolor}
 \pagecolor[rgb]{0.2,0.2,0.2}
 \color[rgb]{1,1,1}
 % --------------------------------
@@ -89,8 +89,7 @@ RL is distinct from most Artificial Intelligence \textbf{(AI)} disciplines in th
 This however relies on the designed learning environment being simple enough for an agent to learn from it’s interactions with the environment alone. This leads to the main challenge in RL, exploration vs exploitation. This describes the balance between the agent exploring the environment to update all actions with their corresponding rewards and exploiting the already learned actions, taking the optimal action. This is important as it not only decides how the agent learns the environment but also its ability to interact with the environment effectively. Since if the agent always takes random actions to explore the environment fully it will never learn the optimal strategy. Likewise if the agent only follows the optimal strategy it will not learn better strategies if they exist. This can drastically affect the time it takes to train the agent since being too close to one extreme or the other causes the agent to either never learn the optimal strategy or learn an incorrect optimal strategy by never encountering the optimal strategy (\cite{Sutton}).
 
 \subsubsection{Q-Learning}
-Q-Learning was initially proposed by Watkins in their Phd thesis \cite{Watkins89} building on MDPs to solve more complex problems without the difficulty of building an equally complex model to solve it. Q-Learning was formalised 3 years later in \cite{Watkins}.
----------================ SORT! (watkins page 55) Harvard
+Q-Learning was initially proposed by Watkins in their Phd thesis \cite{Watkins89} building on MDPs to solve more complex problems without the difficulty of building an equally complex model to solve it. Q-Learning was formalised 3 years later in \cite{Watkins}. (watkins page 55) Harvard
 “It provides  agents with the capability of learning to act optimally in Markovian domains by experiencing the con-sequences of actions, without requiring them to build maps of the domains.”
 
 Q-Learning simplifies the environment into a Q-table with the dimensions $$[number \: of \: states, \; number \: of \: actions]$$ Each point in the table corresponds to a Q-value for an action at the given state. This table allows for the agent to learn from the experience of each state and action. By following the maximum Q-value the optimal path should be followed given that all Q-values are representative of the environment. However, the discrete nature of the Q-table means that QL is limited to discrete problems or the environment must be discretized leading to a loss in state and action accuracy (\cite{Gaskett}). 
