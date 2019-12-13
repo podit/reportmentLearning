@@ -1,5 +1,7 @@
 \documentclass[10pt,journal]{IEEEtran}
 
+\usepackage{graphicx}
+
 \usepackage{silence}
 \WarningFilter{biblatex}{File 'english-ieee.lbx'}
 
@@ -24,9 +26,10 @@ emph={SinKew,__init__},          % Custom highlighting
 emphstyle=\ttb\color{deepred},    % Custom highlighting style
 stringstyle=\color{deepgreen},
 frame=tb,                         % Any extra options here
-numbers=right,
+numbers=left,
 stepnumber=5,
 showstringspaces=false            % 
+framexleftmargin=25px
 }}
 
 \newcommand\pythonexternal[2][]{{
@@ -35,8 +38,8 @@ showstringspaces=false            %
 
 % ------- set darkmode -----------
 %\usepackage{xcolor}
-\pagecolor[rgb]{0.2,0.2,0.2}
-\color[rgb]{1,1,1}
+%\pagecolor[rgb]{0.2,0.2,0.2}
+%\color[rgb]{1,1,1}
 % --------------------------------
 
 \usepackage{lipsum}
@@ -68,7 +71,7 @@ showstringspaces=false            %
 \subsection{Rationale}
 Much of the Reinforcement Learning \textbf{(RL)} literature is focused around specific best case applications to specific problem domains. This is an improvement over past trends described in Kaelbling's survey of the subject from 1996 \cite{Kaelbling} where research was being done on poorly defined problem domains. More recently RL research has become more focused into complex and specific problem domains. However there is little research comparing the various RL methods to one another in a comprehensive manner. Often with brief discussions of the various methods without evidence validating the chosen RL methodology. More often than not the choice of method comes down to examination of the problem domain to be explored.
 
-The focus of this project is in comparing the performance of the more popular Q-Learning \textbf{(QL)}  control policy (\cite{Watkins}) against the lesser known State-Action-Reward-State-Action \textbf{(SARSA)} control policy (\cite{Rummery}) in as comprehensive a manner as possible. With the aim of understanding how applicable these methods are to various problem domains and situations. In theory SARSA should always outperform QL since it always evaluates it’s chosen action (\cite{Sutton}). And is the more computationally expensive method as a result.
+The focus of this project is in comparing the performance of the more popular Q-Learning \textbf{(QL)}  control policy (\cite{Watkins92}) against the lesser known State-Action-Reward-State-Action \textbf{(SARSA)} control policy (\cite{Rummery}) in as comprehensive a manner as possible. With the aim of understanding how applicable these methods are to various problem domains and situations. In theory SARSA should always outperform QL since it always evaluates it’s chosen action (\cite{Sutton}). And is the more computationally expensive method as a result.
 
 Q-Learning and SARSA are very closely related temporal difference \textbf{(TD)} problems and so many optimizations of one are applicable to the other. This makes them simple to compare against one another as well as understand the differences in reinforcement learning environments. However QL overshadows SARSA in the literature quite dramatically, to the point SARSA is considerably harder to research than QL in the academic literature, however I have been unable to find an obvious reason why.
 
@@ -89,8 +92,9 @@ RL is distinct from most Artificial Intelligence \textbf{(AI)} disciplines in th
 This however relies on the designed learning environment being simple enough for an agent to learn from it’s interactions with the environment alone. This leads to the main challenge in RL, exploration vs exploitation. This describes the balance between the agent exploring the environment to update all actions with their corresponding rewards and exploiting the already learned actions, taking the optimal action. This is important as it not only decides how the agent learns the environment but also its ability to interact with the environment effectively. Since if the agent always takes random actions to explore the environment fully it will never learn the optimal strategy. Likewise if the agent only follows the optimal strategy it will not learn better strategies if they exist. This can drastically affect the time it takes to train the agent since being too close to one extreme or the other causes the agent to either never learn the optimal strategy or learn an incorrect optimal strategy by never encountering the optimal strategy (\cite{Sutton}).
 
 \subsubsection{Q-Learning}
-Q-Learning was initially proposed by Watkins in their Phd thesis \cite{Watkins89} building on MDPs to solve more complex problems without the difficulty of building an equally complex model to solve it. Q-Learning was formalised 3 years later in \cite{Watkins}. (watkins page 55) Harvard
-“It provides  agents with the capability of learning to act optimally in Markovian domains by experiencing the con-sequences of actions, without requiring them to build maps of the domains.”
+Q-Learning was initially proposed by Watkins in their Phd thesis \cite{Watkins89} building on MDPs to solve more complex problems without the difficulty of building an equally complex model to solve it. Q-Learning was formalised 3 years later in \cite{Watkins92}.
+
+“It provides  agents with the capability of learning to act optimally in Markovian domains by experiencing the con-sequences of actions, without requiring them to build maps of the domains.” (\cite[55]{Watkins92})
 
 Q-Learning simplifies the environment into a Q-table with the dimensions $$[number \: of \: states, \; number \: of \: actions]$$ Each point in the table corresponds to a Q-value for an action at the given state. This table allows for the agent to learn from the experience of each state and action. By following the maximum Q-value the optimal path should be followed given that all Q-values are representative of the environment. However, the discrete nature of the Q-table means that QL is limited to discrete problems or the environment must be discretized leading to a loss in state and action accuracy (\cite{Gaskett}). 
 
@@ -118,7 +122,7 @@ One of the primary areas of RL research is robotics since the domain of controll
 
 Up till this point single-agent systems have been discussed, however Multi-Agent Reinforcement Learning (MARL) is another large body of work with multiple agents training in the same environment. This domain is similar to single-agent RL but multiple agents open up a new set of challenges and advantages. As described in \cite{Busoniu} the main challenge faced is an exacerbation of the exploration-exploitation trade-off due to inter-agent interactions adding a new level of complexity to the issue. Multiple agents can also be turned into an advantage in MARL by allowing agents to share their experience with other agents. Additionally more advanced reward functions can encourage collaborative actions between agents. One clear advantage over other RL domains is that MARL can benefit from parallel computing increasing the computational efficiency.
 
-Most RL environments could be described as games, unsurprisingly the most active domain of RL is playing video games. Video games present a host of environments easily adaptable to RL applications, however the low complexity tolerance of RL still takes effect. This leads to either very simplistic games being used to train complete agents to perform well such as in \cite{Bellemare} or more high level applications like \cite{Amato} where a RL agent controls the strategies of an artificial intelligence agent designed to play the game. These applications both use MDPs with Q-Leaning (\cite{Watkins}) to consider the higher level temporal planning required for playing video games.
+Most RL environments could be described as games, unsurprisingly the most active domain of RL is playing video games. Video games present a host of environments easily adaptable to RL applications, however the low complexity tolerance of RL still takes effect. This leads to either very simplistic games being used to train complete agents to perform well such as in \cite{Bellemare} or more high level applications like \cite{Amato} where a RL agent controls the strategies of an artificial intelligence agent designed to play the game. These applications both use MDPs with Q-Leaning (\cite{Watkins92}) to consider the higher level temporal planning required for playing video games.
 
 A criticism is raised in \cite{Shoham}, a critical survey of MARL using MDPs, as to the definition of many RL solutions in that they are often performed from an ill defined domain basis in how learning best occurs. It outlines a four stage method of properly defining a RL problem, describing how too many RL solutions work off previous bases without exploring their applicability to the problem being addressed. 
 % reconsider Ng as a citation due to multiple versions and springer being shit
@@ -129,7 +133,7 @@ Whilst not encompassing all of RL, MDPs represent the vast majority of modern ma
 
 MDPs are a mathematical framework to quantify and rationalise decisions made in a Stochastic Game (SG) \cite{Bellman}. SGs are step by step games which quantify an environment probabilistically \cite{Shapley}, this hugely simplifies reward and action computation in RL problems \cite{Busoniu}.
 
-In both \cite{Bellemare, Amato} Q-Learning is used, it is an approach to MDPs which allows a RL agent to explore an environment to experience the various reward states associated with each action. The Q-Learning task will use these immediate rewards to plan temporally how to maximise the reward overall as described in \cite{Watkins}. 
+In both \cite{Bellemare, Amato} Q-Learning is used, it is an approach to MDPs which allows a RL agent to explore an environment to experience the various reward states associated with each action. The Q-Learning task will use these immediate rewards to plan temporally how to maximise the reward overall as described in \cite{Watkins92}. 
 
 Much of the research pertaining to RL problems seems much too condensed, with single authors appearing in multiple papers such as Barto in \cite{Barto} as well as the book \cite{Sutton}. Kaelbling also appears in both \cite{Kaelbling, Smart}. Other concentrations like this appear all across the RL literature which makes me sceptical of the academic basis of many of these methodologies. 
 
@@ -139,17 +143,30 @@ Much of the research pertaining to RL problems seems much too condensed, with si
 
 \section{Experiments and Evaluation}
 
+\begin{figure}
+  \caption{oho it's a huge graph}
+  \centering
+  \includegraphics[width=0.5\textwidth]{Figure_1.png}
+\end{figure}
+
+\begin{figure}
+  \caption{this is much more manageable}
+  \centering
+  \includegraphics[scale=0.5]{Figure_2.pdf}
+\end{figure}
+
 \section{Discussions and Reflective Analysis}
 
 \section{Conclusion}
 
 \addcontentsline{toc}{section}{References}
+\setlength\bibitemsep{1.7\itemsep plus 1pt minus 1pt}
 \printbibliography
 
 \appendix
 
 \scriptsize
-\pythonexternal{final.py}
+\pythonexternal{final.py}[linewidth=5.4]
 
 \addcontentsline{toc}{section}{Acknowledgements}
 \section*{Acknowledgements}

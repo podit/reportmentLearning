@@ -606,14 +606,51 @@
       \field{title}{Reinforcement Learning: An Introduction}
       \field{year}{2018}
     \endentry
-    \entry{Watkins}{article}{}
-      \name{author}{2}{}{%
-        {{un=2,uniquepart=given,hash=6522b6087fe013d303faca6da91596ca}{%
+    \entry{Watkins89}{thesis}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=4be5a785fe12afeb6203c5bac4c2a4cb}{%
            family={Watkins},
            familyi={W\bibinitperiod},
-           given={Christopher\bibnamedelimb J.\bibnamedelimi C.\bibnamedelimi H.},
-           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim H\bibinitperiod},
-           givenun=2}}%
+           given={Christopher},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {King's College}%
+      }
+      \list{location}{1}{%
+        {Cambridge, UK}%
+      }
+      \strng{namehash}{4be5a785fe12afeb6203c5bac4c2a4cb}
+      \strng{fullhash}{4be5a785fe12afeb6203c5bac4c2a4cb}
+      \strng{bibnamehash}{4be5a785fe12afeb6203c5bac4c2a4cb}
+      \strng{authorbibnamehash}{4be5a785fe12afeb6203c5bac4c2a4cb}
+      \strng{authornamehash}{4be5a785fe12afeb6203c5bac4c2a4cb}
+      \strng{authorfullhash}{4be5a785fe12afeb6203c5bac4c2a4cb}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Learning from Delayed Rewards}
+      \field{type}{phdthesis}
+      \field{year}{1989}
+      \verb{urlraw}
+      \verb https://www.cs.rhul.ac.uk/home/chrisw/thesis.html
+      \endverb
+      \verb{url}
+      \verb https://www.cs.rhul.ac.uk/home/chrisw/thesis.html
+      \endverb
+    \endentry
+    \entry{Watkins92}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=4be5a785fe12afeb6203c5bac4c2a4cb}{%
+           family={Watkins},
+           familyi={W\bibinitperiod},
+           given={Christopher},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
         {{un=0,uniquepart=base,hash=ef0afbe0b4e15059c963e026fe213c34}{%
            family={Dayan},
            familyi={D\bibinitperiod},
@@ -621,12 +658,12 @@
            giveni={P\bibinitperiod},
            givenun=0}}%
       }
-      \strng{namehash}{1f776b9a46cb729efd9599e3af8beeef}
-      \strng{fullhash}{1f776b9a46cb729efd9599e3af8beeef}
-      \strng{bibnamehash}{1f776b9a46cb729efd9599e3af8beeef}
-      \strng{authorbibnamehash}{1f776b9a46cb729efd9599e3af8beeef}
-      \strng{authornamehash}{1f776b9a46cb729efd9599e3af8beeef}
-      \strng{authorfullhash}{1f776b9a46cb729efd9599e3af8beeef}
+      \strng{namehash}{7bdabb3ac2b71c3434a2415c09919eaa}
+      \strng{fullhash}{7bdabb3ac2b71c3434a2415c09919eaa}
+      \strng{bibnamehash}{7bdabb3ac2b71c3434a2415c09919eaa}
+      \strng{authorbibnamehash}{7bdabb3ac2b71c3434a2415c09919eaa}
+      \strng{authornamehash}{7bdabb3ac2b71c3434a2415c09919eaa}
+      \strng{authorfullhash}{7bdabb3ac2b71c3434a2415c09919eaa}
       \field{sortinit}{W}
       \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
       \field{extradatescope}{labelyear}
@@ -642,44 +679,6 @@
       \range{pages}{14}
       \verb{doi}
       \verb 10.1007/BF00992698
-      \endverb
-    \endentry
-    \entry{Watkins89}{thesis}{}
-      \name{author}{1}{}{%
-        {{un=2,uniquepart=given,hash=95237318637755e27714e3782c884a8b}{%
-           family={Watkins},
-           familyi={W\bibinitperiod},
-           given={Christopher\bibnamedelimb John\bibnamedelimb Cornish\bibnamedelima Hellaby},
-           giveni={C\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim H\bibinitperiod},
-           givenun=2}}%
-      }
-      \list{institution}{1}{%
-        {King's College}%
-      }
-      \list{location}{1}{%
-        {Cambridge, UK}%
-      }
-      \strng{namehash}{95237318637755e27714e3782c884a8b}
-      \strng{fullhash}{95237318637755e27714e3782c884a8b}
-      \strng{bibnamehash}{95237318637755e27714e3782c884a8b}
-      \strng{authorbibnamehash}{95237318637755e27714e3782c884a8b}
-      \strng{authornamehash}{95237318637755e27714e3782c884a8b}
-      \strng{authorfullhash}{95237318637755e27714e3782c884a8b}
-      \field{sortinit}{W}
-      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{year}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{month}{5}
-      \field{title}{Learning from Delayed Rewards}
-      \field{type}{phdthesis}
-      \field{year}{1989}
-      \verb{urlraw}
-      \verb http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf
-      \endverb
-      \verb{url}
-      \verb http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf
       \endverb
     \endentry
     \entry{Wirth}{article}{}
