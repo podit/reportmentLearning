@@ -1,0 +1,10 @@
+\pythonexternal
+[firstline=180,lastline=211,firstnumber=180,caption=caption,label{lst:label}]
+{code/dblKew.py}
+
+\begin{figure}[h]
+  \centering
+    \includegraphics[scale=0.5]{fig/sum_fig.png}
+  \caption{this is a figure}
+  \label{fig:summin}
+\end{figure}

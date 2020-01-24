@@ -4,7 +4,7 @@ import numpy as np
 
 # Q-learning class to train and test q table for given environment
 class SinKew:
-    def __init__(self, init, pol, env, cOS, cAS, dis, maxS, nTst, log, ver,
+    def __init__(self, init, pol, env, cOS, cAS, dis, maxS, nTst, gDec, ver,
             rTst, rTrn):
         
         # Set poliy bools for control of Q-learning
@@ -16,12 +16,6 @@ class SinKew:
             self.polS = True
         else: print('Not a valid control policy')
 
-        # Set log flag for training
-        if log:
-            self.log = True
-        else:
-            self.log = False
-
         # Set constant flags and values for the Q-learning object
         self.initialisation = init
         self.environment = env
@@ -30,7 +24,7 @@ class SinKew:
         self.dis = dis
         self.maxSteps = maxS
         self.nTests = nTst
-        self.logFlag = log
+        self.gDecayFlag = gDec
         self.verboseFlag = ver
         self.renderTest = rTst
         self.renderTrain = rTrn
@@ -55,8 +49,8 @@ class SinKew:
 
             # Set bounds for infinite observation spaces in 'CartPole-v1'
             if self.environment == 'CartPole-v1':
-                self.os_high[1], self.os_high[3] = 5, 5
-                self.os_low[1], self.os_low[3] = -5, -5
+                self.os_high[1], self.os_high[3] = 6, 4
+                self.os_low[1], self.os_low[3] = -6, -4
 
             # Discretize the observation space
             self.discrete_os_size = [self.dis] * len(self.os_high)
@@ -82,7 +76,7 @@ class SinKew:
         
         # Initialise q-table with supplied type
         if self.initialisation == 'uniform':
-            self.Q = np.random.uniform(low = 0, high = 2, size=(
+            self.Q = np.random.uniform(low = -2, high = 0, size=(
                 self.discrete_os_size + self.discrete_as_size))
         elif self.initialisation == 'zeros':
             self.Q = np.zeros((self.discrete_os_size +
@@ -91,6 +85,10 @@ class SinKew:
             self.Q = np.ones((self.discrete_os_size +
                 self.discrete_as_size))
         else: print('initialisation method not valid')
+        
+        # Create counter array for calculating decayed gamma values
+        if self.gDecayFlag:
+            self.N = np.ones((self.discrete_os_size + self.discrete_as_size))
 
         return
 
@@ -98,7 +96,7 @@ class SinKew:
     def get_discrete_state(self, state):
         
         discrete_state = ((state - self.os_low) /\
-                self.discrete_os_win_size) - 0.5
+                self.discrete_os_win_size)
         
         return tuple(discrete_state.astype(np.int))
 
@@ -132,6 +130,9 @@ class SinKew:
         maxS = False
         done = False
         render = False
+
+        # Create value for recording total reward per epidode
+        total_reward = 0
         
         # Reset environment for new episode and get initial discretized state
         if self.cont_os: d_s = self.get_discrete_state(self.env.reset())
@@ -139,28 +140,18 @@ class SinKew:
             s = self.env.reset()
             d_s = s
 
-        # Create numpy arrays and set flag for log mode
-        if self.log:
-            modeL = True
-            history_o = np.zeros((length, len(d_s)))
-            history_a = np.zeros(length)
-        else:
-            modeL = False
-
         # Report episode and epsilon and set the episode to be rendered
         #   if the resolution is reached
         if episode % self.resolution == 0 and episode != 0:
             if self.verboseFlag: print(episode, epsilon)
             if self.renderTrain: render = True
-
-        # Create values for recording rewards and task completion
-        total_reward = 0
         
         # Get initial action using e-Greedy method for SARSA policy
         if self.polS: a, d_a = self.e_greedy(epsilon, d_s)
 
         # Loop the task until task is completed or max steps are reached
         while not done:
+            steps += 1
             if render: self.env.render()
             
             # Get initial action using e-Greedy method for Q-Lrn policy
@@ -174,25 +165,31 @@ class SinKew:
             if self.cont_os: d_s_ = self.get_discrete_state(s_)
             else: d_s_ = s_
 
+            # If gamma decay flag, calculate gamma value and iterate counter
+            if self.gDecayFlag:
+                gamma = 1 - math.exp(exponent * self.N[d_s + (d_a, )])
+                self.N[d_s + (d_a, )] += 1
+
             # If max steps have been exceeded set episode to complete
             if maxS: done = True
 
-            # If the task is not completed update Q by max future Q-values
+            # If the task is not completed update Q-value by selected policy
             if not done:
+                # Select maximum action of next state for QL (off-policy)
                 if self.polQ:
                     max_future_q = np.max(self.Q[d_s_])
                 
-                    # Update Q-value with Bellman Equation
+                    # Update Q-value with Bellman Equation for selected action
                     self.Q[d_s + (d_a, )] = self.Q[d_s + (d_a,)]\
                             + alpha * (reward + gamma *\
                             max_future_q - self.Q[d_s + (d_a,)])
 
-                # Select next action based on next discretized state using
-                #   e-Greedy method for SARSA policy
+                # Select next action based on next state using
+                #   e-Greedy method for SARSA (on-policy)
                 if self.polS:
-                    a_, d_a_ = self.e_greedy(epsilon, d_s)
+                    a_, d_a_ = self.e_greedy(epsilon, d_s_)
                     
-                    # Update Q-value with Bellman Equation
+                    # Update Q-value with Bellman Equation for selected action
                     self.Q[d_s + (d_a, )] = self.Q[d_s + (d_a,)]\
                             + alpha * (reward + gamma *\
                             self.Q[d_s_ + (d_a_,)] - self.Q[d_s + (d_a,)])
@@ -202,27 +199,18 @@ class SinKew:
                 # If max steps have been reached do not apply penalty
                 if maxS:
                     pass
-                # Apply normal penalty to the current q value(q_lrn)
-                elif self.polQ: self.Q[d_s + (d_a, )] = penalty
-                elif self.polS:
+                else:
                     # Update Q-value with Bellman Equation with next SA value
                     #   as 0 when the next state is terminal
                     self.Q[d_s + (d_a, )] = self.Q[d_s + (d_a,)]\
                             + alpha * (reward + gamma *\
                             penalty - self.Q[d_s + (d_a,)])
-                # If log penalties are used apply penalty respective to the
-                #   exponent of the relative position 1 to 10
-                elif modeL and steps > length and epsilon == 0:
-                    for i in range(length):
-                        self.Q[tuple(history_o[i].astype(np.int)) +\
-                                (int(history_a[i]), )]\
-                                += penalty * math.exp(exponent) ** i
                
-                # Iterate the resolution counter and record rewards
+                # Iterate the resolution counter and record total reward
                 if self.res == self.resolution: self.res = 0
                 else:
                     self.timestep_reward_res[self.res] = total_reward
-                    self.res += 1
+                    self.res += 1    
 
                 # Print resolution results if verbose flag is set
                 if self.verboseFlag and episode % self.resolution == 0\
@@ -234,14 +222,6 @@ class SinKew:
                 # Close the render of the episode if rendered
                 if render: self.env.close()
 
-            # Record states and actions into rolling numpy array for applying
-            #   log panalties
-            if modeL and epsilon == 0:
-                history_o = np.roll(history_o, 1)
-                history_a = np.roll(history_a, 1)
-                history_o[0] = d_s
-                history_a[0] = d_a
-
             # Set next state to current state (Q-Learning) control policy
             if self.polQ: d_s = d_s_
 
@@ -250,7 +230,6 @@ class SinKew:
             
             # If max steps are reached complete episode and set max step flag
             if steps == self.maxSteps: maxS = True
-            steps += 1
         
         return
 
@@ -275,8 +254,8 @@ class SinKew:
             
             # Loop until test conditions are met iterating the steps counter
             while not done:
-                if self.renderTest: self.env.render()
                 steps += 1
+                if self.renderTest: self.env.render()
                 
                 # Get action by e-greedy method
                 a, d_a = self.e_greedy(epsilon, d_s, greedy)
